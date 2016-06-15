@@ -1,0 +1,19 @@
+<head>
+  <title>sa-parse-items</title>
+</head>
+
+<body>
+  <h1>Welcome to Meteor!</h1>
+
+  {{> hello}}
+  {{#each data}}
+    {{this.count}}
+  {{/each}}
+</body>
+
+<template name="hello">
+  <form>
+    <input type="file" value="Click Me">
+    <input type="submit" value="Submit">
+  </form>
+</template>
