@@ -1,0 +1,40 @@
+<head>
+  <title>sa-parse-items</title>
+</head>
+
+<body>
+  <h1>Welcome to Meteor!</h1>
+
+  {{> importData}}
+</body>
+
+<template name="importData">
+  <form>
+    <input type="file" value="Click Me">
+    <input type="submit" value="Submit">
+  </form>
+  <div style="display: flex; width: 100%">
+    <div style="display: flex; width: 30%; height: 50px; overflow: auto; border: 1.5px solid black;">
+      UOM
+    </div>
+    <div style="display: flex; width: 70%; height 50px; overflow: auto; border: 1.5px solid black;">
+      Item Numbers
+    </div>
+  </div>
+  {{#each data}}
+  <div style="display: flex; width: 100%">
+    <div style="display: flex; width: 30%; height: 200px; overflow: auto; border: 1.5px solid black;">
+      {{this.name}}
+    </div>
+    <div style="display: flex; width: 70%; height 200px; overflow: auto; border: 1.5px solid black;">
+      <ul>
+      {{#with this.itemNums}}
+        {{#each this}}
+        <li>{{this}}</li>
+        {{/each}}
+      {{/with}}
+      </ul>
+    </div>
+  </div>
+  {{/each}}
+</template>

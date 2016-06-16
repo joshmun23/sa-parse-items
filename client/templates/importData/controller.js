@@ -1,12 +1,28 @@
+if (Meteor.isServer) {
+  Meteor.methods({
+    unfilteredUOMListInsert: function(data) {
+      console.log(typeof data)
+      return UnfilteredUOMList.upsert({name: data.name}, data);
+    }
+  });
+
+  Meteor.publish('lists', function() {
+    return UnfilteredUOMList.find();
+  });
+}
+
 if (Meteor.isClient) {
   Template.importData.onCreated(function() {
-    Session.setDefault('data', {});
+    Meteor.subscribe('lists');
+    Session.setDefault('data', []);
+    this.fetchItemNumbers = fetchItemNumbers.bind(this);
   });
 
   Template.importData.helpers({
     data: function() {
       debugger;
-      return Session.get('data');
+      Session.get('data')
+      return Template.instance().fetchItemNumbers();
     }
   });
 
@@ -27,20 +43,6 @@ if (Meteor.isClient) {
           Session.set('data', data)
         }
       })
-    }
-  });
-}
-
-if (Meteor.isServer) {
-  Meteor.startup(function () {
-    Sizes = new Mongo.Collection('sizes');
-    UnfilteredUOMList = new Mongo.Collection('unfilteredUOMList');
-  });
-
-  Meteor.methods({
-    unfilteredUOMListInsert: function(data) {
-      console.log(typeof data)
-      return UnfilteredUOMList.upsert({name: data.name}, data);
     }
   });
 }
@@ -126,7 +128,8 @@ function findGroups(results) {
 }
 
 function fetchItemNumbers() {
-  _.map(UnfilteredUOMList.find().fetch(), function(lst) { return {
+  debugger;
+  return _.map(UnfilteredUOMList.find().fetch(), function(lst) { return {
       name: lst.name,
       itemNums: [lst.itemNums.JFITEM]
     };
